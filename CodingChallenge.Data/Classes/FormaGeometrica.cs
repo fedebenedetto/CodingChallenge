@@ -7,6 +7,8 @@
  * TODO: Implementar Trapecio/Rectangulo, agregar otro idioma a reporting.
  * */
 
+using CodingChallenge.Interface;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +16,7 @@ using System.Text;
 
 namespace CodingChallenge.Data.Classes
 {
-    public class FormaGeometrica
+    public class FormaGeometrica : IReporte
     {
         #region Formas
 
@@ -32,17 +34,14 @@ namespace CodingChallenge.Data.Classes
 
         #endregion
 
-        private readonly decimal _lado;
+       
 
-        public int Tipo { get; set; }
-
-        public FormaGeometrica(int tipo, decimal ancho)
+        public FormaGeometrica()
         {
-            Tipo = tipo;
-            _lado = ancho;
+
         }
 
-        public static string Imprimir(List<FormaGeometrica> formas, int idioma)
+        public  string Imprimir(List<FormaGeometricaModel> formas, int idioma)
         {
             var sb = new StringBuilder();
 
@@ -80,20 +79,20 @@ namespace CodingChallenge.Data.Classes
                     if (formas[i].Tipo == Cuadrado)
                     {
                         numeroCuadrados++;
-                        areaCuadrados += formas[i].CalcularArea();
-                        perimetroCuadrados += formas[i].CalcularPerimetro();
+                        areaCuadrados += CalcularArea(formas[i]);
+                        perimetroCuadrados += CalcularPerimetro(formas[i]);
                     }
                     if (formas[i].Tipo == Circulo)
                     {
                         numeroCirculos++;
-                        areaCirculos += formas[i].CalcularArea();
-                        perimetroCirculos += formas[i].CalcularPerimetro();
+                        areaCirculos += CalcularArea(formas[i]);
+                        perimetroCirculos += CalcularPerimetro(formas[i]);
                     }
                     if (formas[i].Tipo == TrianguloEquilatero)
                     {
                         numeroTriangulos++;
-                        areaTriangulos += formas[i].CalcularArea();
-                        perimetroTriangulos += formas[i].CalcularPerimetro();
+                        areaTriangulos += CalcularArea(formas[i]);
+                        perimetroTriangulos += CalcularPerimetro(formas[i]);
                     }
                 }
                 
@@ -142,25 +141,25 @@ namespace CodingChallenge.Data.Classes
             return string.Empty;
         }
 
-        public decimal CalcularArea()
+        public static decimal CalcularArea(FormaGeometricaModel forma)
         {
-            switch (Tipo)
+            switch (forma.Tipo)
             {
-                case Cuadrado: return _lado * _lado;
-                case Circulo: return (decimal)Math.PI * (_lado / 2) * (_lado / 2);
-                case TrianguloEquilatero: return ((decimal)Math.Sqrt(3) / 4) * _lado * _lado;
+                case Cuadrado: return forma.Lado * forma.Lado;
+                case Circulo: return (decimal)Math.PI * (forma.Lado / 2) * (forma.Lado / 2);
+                case TrianguloEquilatero: return ((decimal)Math.Sqrt(3) / 4) * forma.Lado * forma.Lado;
                 default:
                     throw new ArgumentOutOfRangeException(@"Forma desconocida");
             }
         }
 
-        public decimal CalcularPerimetro()
+        public static decimal CalcularPerimetro(FormaGeometricaModel forma)
         {
-            switch (Tipo)
+            switch (forma.Tipo)
             {
-                case Cuadrado: return _lado * 4;
-                case Circulo: return (decimal)Math.PI * _lado;
-                case TrianguloEquilatero: return _lado * 3;
+                case Cuadrado: return forma.Lado * 4;
+                case Circulo: return (decimal)Math.PI * forma.Lado;
+                case TrianguloEquilatero: return forma.Lado * 3;
                 default:
                     throw new ArgumentOutOfRangeException(@"Forma desconocida");
             }
