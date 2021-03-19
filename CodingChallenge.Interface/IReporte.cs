@@ -10,5 +10,6 @@ namespace CodingChallenge.Interface
     public interface IReporte
     {
         string Imprimir(List<FormaGeometricaModel> formas, int idioma);
+        List<FormaModel> ObtenerFormas();
     }
 }

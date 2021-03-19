@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    public class FormaGeometricaModel : FormaModel
+    public class FormaModel
     {
-        public decimal Lado { get; set; }
-
+        public int Tipo { get; set; }
+        public string Nombre { get; set; }
     }
 }

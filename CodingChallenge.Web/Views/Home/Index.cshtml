@@ -2,30 +2,134 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+
+<div class="row" style="margin-top:10%">
+    <div class="form-group">
+        <label for="dropFormas" class="col-sm-12 control-label">Formas</label>
+        <div class="col-sm-3">
+            @Html.DropDownList("Formas", null, htmlAttributes: new { @class = "form-control", @id = "dropFormas" })
+        </div>
+    </div>
+    <div class="form-group" style="margin-top:10%">
+        <label for="txtLado" class="col-sm-12 control-label">Medida del Lado</label>
+        <div class="col-sm-3 input-group">
+            <input type="number" id="txtLado" onkeypress="return event.charCode >= 48" min="1" class="form-control"
+                   oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="4" />
+            <span class="input-group-btn">
+                <button class="btn btn-success" id="agregar" type="button" onclick="addItemTxt()">
+                    Agregar <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </button>
+            </span>
+        </div>
+
+    </div>
+    <div class="form-group" style="margin-top:10%">
+        <div class="col-sm-5">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Forma</th>
+                        <th>Lado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="bodyTable"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-top:10%">
+    <div class="col-md-12 form-horizontal">
+
+        <button type="button" class="btn btn-warning" onclick="obtenerReporte(1)">Obtener Informe en Español</button>
+        <button type="button" class="btn btn-primary" onclick="obtenerReporte(2)">Obtener Informe en Ingles</button>
+        <button type="button" class="btn btn-success" onclick="obtenerReporte(3)">Obtener Informe en Portugués</button>
+
+        <div class="textarea" id="reporte"></div>
+    </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+@section Styles {
+    <style>
+        div.textarea {
+            border: 1px inset #ccc;
+            background-color: white;
+            font: small courier, monospace black;
+            width: 500px;
+            height: 300px;
+            overflow: auto;
+            margin-top: 10%
+        }
+    </style>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script>
+    var RootAppPath = '@CodingChallenge.Helper.SiteURLHelper.GetVirtualPath()';
+
+var idTag = 0;
+            function addItemTxt() {
+                idTag++;
+                var text = $('#dropFormas option:selected').text();
+                var id = $('#dropFormas').val();
+                var lado = $('#txtLado').val();
+
+                if (id == 0) {
+                    alert('Debe ingresar al menos una forma');
+                    return;
+                } else  if(lado ==''){
+                    alert('Debe ingresar una medida');
+                    return;
+                }
+                var idTrash = idTag;
+                var htmlRow = '<tr id=' + idTag + '><td style="display:none;">' + id + '</td><td>' + text + '</td><td>' + lado + '</td><td><a nohref onclick="removeItem(' + idTag + ')">Eliminar</a></td><td style="display: none; ">' + idTrash + '</td></tr>';
+                $('#bodyTable').append(htmlRow);
+                $('#txtLado').val('');
+                $('#dropFormas').val(0);
+            }
+
+            function removeItem(id) {
+                $("#" + id + "").remove();
+            }
+    function obtenerReporte(idioma) {
+        var array = [];
+        $('#bodyTable tr').each(function () {
+            var forma = {
+                lado: $(this).find("td").eq(2).html(),
+                tipo: $(this).find("td").eq(0).html()
+            };
+            array.push(forma);
+        });
+
+        if (array == 0) {
+            alert('Debe ingresar al menos una forma');
+            return;
+        }
+        $.ajax(
+            {
+                type: 'POST',
+                contentType: "application/json, charset=utf-8",
+                dataType: 'json',
+                url: RootAppPath + "Home/Imprimir",
+                data: JSON.stringify({
+                    formas: array,
+                    idioma: idioma
+                }),
+                success: function (data) {
+                    if (data.ok) {
+                        $("#reporte").html(data.msj);
+
+                    }
+                    else {
+
+                        alert(data.msj);
+
+                    }
+                }
+            });
+    }
+    </script>
+}

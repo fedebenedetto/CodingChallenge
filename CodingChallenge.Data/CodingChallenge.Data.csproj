@@ -35,6 +35,12 @@
       <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="CodingChallenge.Interface">
+      <HintPath>..\CodingChallenge.Interface\bin\Debug\CodingChallenge.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Model">
+      <HintPath>..\Model\bin\Debug\Model.dll</HintPath>
+    </Reference>
     <Reference Include="Moq, Version=4.5.23.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.5.23\lib\net45\Moq.dll</HintPath>
       <Private>True</Private>
@@ -57,16 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CodingChallenge.Interface\CodingChallenge.Interface.csproj">
-      <Project>{4ce1aff0-3b26-45d4-bd5e-94b2ab49dc29}</Project>
-      <Name>CodingChallenge.Interface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Model\Model.csproj">
-      <Project>{69cf12a9-3f3a-4c02-9890-11b845971863}</Project>
-      <Name>Model</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
