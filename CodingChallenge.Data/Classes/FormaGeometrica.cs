@@ -50,8 +50,11 @@ namespace CodingChallenge.Data.Classes
             {
                 if (idioma == Castellano)
                     sb.Append("<h1>Lista vacía de formas!</h1>");
-                else
+                else if (idioma == Ingles)
                     sb.Append("<h1>Empty list of shapes!</h1>");
+                else
+                    sb.Append("<h1>Lista vazia de formas!</h1>");
+
             }
             else
             {

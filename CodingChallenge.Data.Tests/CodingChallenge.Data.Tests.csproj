@@ -131,12 +131,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodingChallenge.Data\CodingChallenge.Data.csproj">
       <Project>{b21a8f24-c7e0-4e69-b1d7-b424237dc216}</Project>
       <Name>CodingChallenge.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CodingChallenge.Interface\CodingChallenge.Interface.csproj">
+      <Project>{4CE1AFF0-3B26-45D4-BD5E-94B2AB49DC29}</Project>
+      <Name>CodingChallenge.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{69CF12A9-3F3A-4C02-9890-11B845971863}</Project>
+      <Name>Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
